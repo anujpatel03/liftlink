@@ -4,14 +4,14 @@ import { IoPerson } from "react-icons/io5";
 
 
 const style = {
-    wrapper: `w-full h-16 flex items-center md:justify-around bg-black text-white`,
+    wrapper: `h-16 w-full bg-black text-white flex md:justify-around items-center px-60 fixed z-20`,
     leftMenu: `flex gap-3`,
     logo: `text-3xl text-white flex cursor-pointer mr-16`,
-    menuItem: `text-lg text-white flex cursor-pointer font-medium items-center mx-4`,
+    menuItem: `text-lg text-white font-medium flex items-center mx-4 cursor-pointer`,
     rightMenu: `flex gap-3 items-center`,
-    userImageContainer: `rounded-full overflow-hidden mr-2`,
-    userImage: `rounded-full h-10 w-10 mr-4 p-px object-cover cursor-pointer`,
-    loginButton: `bg-white text-black rounded-full px-4 py-2 font-medium cursor-pointer hover:bg-gray-100 transition duration-300 flex align-center items-center`,
+    userImageContainer: `mr-2`,
+    userImage: `h-10 w-10 mr-4 rounded-full p-px object-cover cursor-pointer`,
+    loginButton: `flex items-center cursor-pointer rounded-full px-4 py-1 h-10 bg-white text-black`,
     loginText: `text-black font-medium ml-2`,
 }
 
@@ -42,7 +42,7 @@ const Navbar = () => {
 
                         <div className={style.loginButton}>
                             <IoPerson />
-                           <span className={style.loginText}> Login</span> 
+                            <span className={style.loginText}> Login</span>
                         </div>
                     )
 

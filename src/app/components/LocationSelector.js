@@ -44,7 +44,7 @@ const LocationSelector = () => {
                 <div className={style.verticalLine} />
                 <div className={`${style.inputBox} ${inFocus === 'to' && style.focusedInputBox}`}>
                     <div className={style.svgContainer}>
-                        <svg viewBox='0 0 24 24' width='1em' height='1em'>
+                        <svg viewBox='0 0 24 24' width='1em' height='1em'>      {/* input field me square ke liye */}
                             <path
                                 fillRule='evenodd'
                                 clipRule='evenodd'

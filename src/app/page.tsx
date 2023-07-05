@@ -11,6 +11,7 @@ const style = {
   rideRequest: `h-full max-h-[700px] bg-white rounded-lg flex flex-col overflow-scroll`,
 }
 
+
 export default function Home() {
 
   return (

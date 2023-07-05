@@ -15,7 +15,7 @@ const style = {
     priceContainer: `flex items-center`,
     price: `mr-[-0.8rem]`,
 }
-const baseURL = process.env.NEXT_PUBLIC_BASE_URL
+
 const basePrice = 1542
 const RideSelector = () => {
     const [carList, setCarList] = useState([]);  // Setting up carList state
@@ -24,7 +24,7 @@ const RideSelector = () => {
     useEffect(() => {
         ; (async () => {
             try {
-                const response = await fetch(`${baseURL}/api/db/getRideTypes`)  // Getting data from sanity
+                const response = await fetch('/api/db/getRideTypes')  // Getting data from sanity
                 const data = await response.json()
                 setCarList(data.data)       // Setting up carList state
                 // console.log(data.data)

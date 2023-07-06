@@ -1,5 +1,5 @@
-import ethLogo from '../images/eth-logo.png'
 import Image from 'next/image'
+import ethLogo from '../images/eth-logo.png'
 import { useEffect, useState } from 'react'
 
 const style = {
@@ -19,15 +19,16 @@ const style = {
 const basePrice = 1542
 const RideSelector = () => {
     const [carList, setCarList] = useState([]);  // Setting up carList state
-    const [selectedCar, setSelectedCar] = useState(null);  // Setting up selectedCar state
+    // const [selectedCar, setSelectedCar] = useState(null);  // Setting up selectedCar state
 
     useEffect(() => {
         ; (async () => {
             try {
                 const response = await fetch('/api/db/getRideTypes')  // Getting data from sanity
+                // console.log(response)
                 const data = await response.json()
                 setCarList(data.data)       // Setting up carList state
-                // console.log(data.data)
+                console.log(data.data)
             }
             catch (error) {
                 console.log(error)      // Catching error if any
@@ -39,29 +40,29 @@ const RideSelector = () => {
         <div className={style.wrapper}>
             <div className={style.title}> Choose a Ride, or swipe up for more </div>
             <div className={style.carList}>
-                   {carList.map((car, index) => {
-                        return (
-                            <div className={style.car} key={index}>
-                                <Image
-                                    className={style.carImage}
-                                    src={car.iconURL}
-                                    alt={car.service}
-                                    height={50}
-                                    width={50}
-                                />
-                                <div className={style.carDetails}>
-                                    <div className={style.service}> {car.service} </div>
-                                    <div className={style.time}> 5 min away </div>
-                                </div>
-                                <div className={style.priceContainer}>
-                                    <div className={style.price}>
-                                        {((basePrice / 10 ** 5) * car.priceMultiplier).toFixed(5)}  {/* Calculating price in etherium */}
-                                    </div>
-                                    <Image src={ethLogo} alt="eth-logo" height={25} width={40} />
-                                </div>
+                {carList.map((car, index) => {
+                    return (
+                        <div className={style.car} key={index}>
+                            <Image
+                                className={style.carImage}
+                                src={car.iconURL}
+                                alt={car.service}
+                                height={50}
+                                width={50}
+                            />
+                            <div className={style.carDetails}>
+                                <div className={style.service}> {car.service} </div>
+                                <div className={style.time}> 5 min away </div>
                             </div>
-                        );
-                    })
+                            <div className={style.priceContainer}>
+                                <div className={style.price}>
+                                    {((basePrice / 10 ** 5) * car.priceMultiplier).toFixed(5)}  {/* Calculating price in etherium */}
+                                </div>
+                                <Image src={ethLogo} alt="eth-logo" height={25} width={40} />
+                            </div>
+                        </div>
+                    );
+                })
                 }
             </div>
         </div>

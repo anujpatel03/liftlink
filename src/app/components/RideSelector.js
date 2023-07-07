@@ -21,7 +21,7 @@ const style = {
 const RideSelector = () => {
     const [carList, setCarList] = useState([]);  // Setting up carList state
     const { selectedRide, setSelectedRide, setPrice, basePrice } = useContext(LiftContext)
-    console.log(basePrice)
+    console.log("baseprice : ",basePrice)
     useEffect(() => {
         ; (async () => {
             try {

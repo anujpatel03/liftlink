@@ -2,6 +2,7 @@
 import RideSelector from "./RideSelector"
 import { useContext } from "react"
 import { LiftContext } from "../../../context/liftContext"
+import { ethers } from 'ethers'
 
 const style = {
     wrapper: `flex-1 h-full flex flex-col justify-between`,
@@ -11,10 +12,20 @@ const style = {
 }
 
 const Confirm = () => {
-    const {currentAccount, pickup, dropoff, price, selectedRide, pickupCoordinates, dropoffCoordinates} = useContext(LiftContext);
+    const {
+        currentAccount,
+        pickup,
+        dropoff,
+        price,
+        selectedRide,
+        pickupCoordinates,
+        dropoffCoordinates,
+        metamask,
+    } = useContext(LiftContext);
+
     const storeTripDetails = async (pickup, dropoff) => {
-        try{
-            await fetch ('api/db/saveTrips', {
+        try {
+            await fetch('api/db/saveTrips', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -27,11 +38,23 @@ const Confirm = () => {
                     selectedRide: selectedRide,
                 }),
             })
+
+            await metamask.request({
+                method: 'eth_sendTransaction',
+                params: [
+                    {
+                        from: currentAccount,
+                        to: process.env.NEXT_PUBLIC_LIFTLINK_ADDRESS,
+                        gas: '0x7EF40', // 520000 Gwei ( If a transaction exceeds the gas limit, it will fail and any changes made during the transaction will be reverted.)
+                        value: ethers.utils.parseEther(price)._hex,
+                    },
+                ],
+            })
         }
-        catch(error){
+        catch (error) {
             console.error(error);
         }
-     }
+    }
     return (
         <div className={style.wrapper}>
             <div className={style.rideSelectorContainer}>
@@ -43,7 +66,7 @@ const Confirm = () => {
                 <div className={style.confirmButtonContainer}>
                     <div
                         className={style.confirmButton}
-                        onClick={() => { storeTripDetails(pickup , dropoff) }}
+                        onClick={() => { storeTripDetails(pickup, dropoff) }}
                     >
                         Confirm {selectedRide.service || 'LiftX'}
                     </div>

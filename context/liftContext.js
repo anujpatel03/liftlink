@@ -17,7 +17,7 @@ export const LiftProvider = ({ children }) => {
 
     let metamask
 
-    if (typeof window !== 'undefined') {    
+    if (typeof window !== 'undefined') {
         metamask = window.ethereum
     }
 
@@ -31,6 +31,7 @@ export const LiftProvider = ({ children }) => {
     }, [currentAccount])
 
     useEffect(() => {   // useEffect for getting duration
+        let isMounted = true; // Add a variable to track mounted state
         if (!pickupCoordinates || !dropoffCoordinates) return
             ; (async () => {
                 try {
@@ -46,7 +47,15 @@ export const LiftProvider = ({ children }) => {
                     })
 
                     const data = await response.json()
-                    setBasePrice(Math.round(await data.data))
+                    // console.log('setbasePrice ', data)
+                    // 0.0000065
+                    if (isMounted) { // Check if the component is still mounted before updating state
+                        setBasePrice(Math.round(data.data) / 60);
+                    }
+                    return () => {
+                        isMounted = false;
+                    };
+                    // setBasePrice((Math.round(await data.data))/60)
                 } catch (error) {
                     console.error(error)
                 }
@@ -54,7 +63,7 @@ export const LiftProvider = ({ children }) => {
     }, [pickupCoordinates, dropoffCoordinates])
 
     const checkIfWalletIsConnected = async () => {  // This function checks if the user has metamask installed and connected
-        if (!window.ethereum) return    
+        if (!window.ethereum) return
         try {
             const addressArray = await window.ethereum.request({
                 method: 'eth_accounts',
@@ -85,13 +94,10 @@ export const LiftProvider = ({ children }) => {
         }
     }
 
-    
-
-
     const createLocationCoordinatePromise = (locationName, locationType) => {
         return new Promise(async (resolve, reject) => {
             try {
-            
+
                 const response = await fetch('api/map/getLocationCoordinates', {    // This is the API route we created in pages/api/map/getLocationCoordinates.js
                     method: 'POST',
                     headers: {
@@ -112,8 +118,7 @@ export const LiftProvider = ({ children }) => {
                         case 'dropoff':
                             setDropoffCoordinates(data.data)
                             break
-                        default:
-                            break
+                        
                     }
                     resolve()
                 } else {
@@ -155,7 +160,7 @@ export const LiftProvider = ({ children }) => {
         }
     }
 
-    const requestToGetCurrentUsersInfo = async walletAddress => {   
+    const requestToGetCurrentUsersInfo = async walletAddress => {
         try {
             const response = await fetch(
                 `/api/db/getUserInfo?walletAddress=${walletAddress}`,

@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import ethLogo from '../images/eth-logo.png'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
+import { LiftContext } from '../../../context/liftContext'
 
 const style = {
     wrapper: `h-full flex flex-col`,
@@ -16,17 +17,18 @@ const style = {
     price: `mr-[-0.8rem]`,
 }
 
-const basePrice = 1542
+
 const RideSelector = () => {
     const [carList, setCarList] = useState([]);  // Setting up carList state
-    // const [selectedCar, setSelectedCar] = useState(null);  // Setting up selectedCar state
-
+    const { selectedRide, setSelectedRide, setPrice, basePrice } = useContext(LiftContext)
+    console.log(basePrice)
     useEffect(() => {
         ; (async () => {
             try {
                 const response = await fetch('/api/db/getRideTypes')  // Getting data from sanity
                 const data = await response.json()
                 setCarList(data.data)       // Setting up carList state
+                setSelectedRide(data.data[0])
             }
             catch (error) {
                 console.log(error)      // Catching error if any
@@ -40,7 +42,17 @@ const RideSelector = () => {
             <div className={style.carList}>
                 {carList.map((car, index) => {
                     return (
-                        <div className={style.car} key={index}>
+                        <div key={index}
+                            className={`${selectedRide.service === car.service
+                                    ? style.selectedCar
+                                    : style.car
+                            }`}
+                            onClick={() => {
+                                setSelectedRide(car)
+                                setPrice(((basePrice / 10 ** 5) * car.priceMultiplier).toFixed(5))
+                            }}
+
+                        >
                             <Image
                                 className={style.carImage}
                                 src={car.iconURL}

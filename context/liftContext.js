@@ -30,7 +30,7 @@ export const LiftProvider = ({ children }) => {
         requestToGetCurrentUsersInfo(currentAccount)
     }, [currentAccount])
 
-    useEffect(() => {
+    useEffect(() => {   // useEffect for getting duration
         if (!pickupCoordinates || !dropoffCoordinates) return
             ; (async () => {
                 try {

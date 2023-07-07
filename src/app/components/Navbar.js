@@ -1,3 +1,6 @@
+"use client"
+import { useContext } from "react";
+import { LiftContext } from "../../../context/liftContext";
 import Image from "next/image"
 import avatar from "../images/avatar.jpeg"
 import { IoPerson } from "react-icons/io5";
@@ -16,9 +19,11 @@ const style = {
 }
 
 // const currentAccount = "0x22947Fd32D915De273a17f22463bAc5e99aDDE63"
-const currentAccount = ""
-
+// const showMessage = () => {
+//     alert("Install Meta Mask browser extension and connect it with liftlink !");
+// }
 const Navbar = () => {
+    const {currentAccount, connectWallet, currentUser} = useContext(LiftContext);
     return (
         <div className={style.wrapper}>
             <div className={style.leftMenu}>
@@ -29,7 +34,7 @@ const Navbar = () => {
             </div>
             <div className={style.rightMenu}>
                 <div className={style.menuItem}>Help</div>
-                <div className={style.menuItem}>Anuj</div>
+                <div className={style.menuItem}>{currentUser.name}</div>
                 <div className={style.userImageContainer}>
                     <Image className={style.userImage} src={avatar} alt="avatar" width={40} height={40} />
                 </div>
@@ -40,7 +45,7 @@ const Navbar = () => {
                         </div>
                     ) : (
 
-                        <div className={style.loginButton}>
+                        <div className={style.loginButton}  onClick={()=> connectWallet()}>
                             <IoPerson />
                             <span className={style.loginText}> Login</span>
                         </div>

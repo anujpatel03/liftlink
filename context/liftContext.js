@@ -1,6 +1,6 @@
 "use client"
 import { createContext, useState, useEffect } from 'react'
-import { faker } from '@faker-js/faker'
+import { faker } from '@faker-js/faker'     // This will generate fake name
 
 export const LiftContext = createContext()  // Creating a context object
 
@@ -17,15 +17,15 @@ export const LiftProvider = ({ children }) => {
 
     let metamask
 
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined') {    
         metamask = window.ethereum
     }
 
-    useEffect(() => {
+    useEffect(() => {       // This useEffect checks that wallet is connected or not
         checkIfWalletIsConnected()
     }, [])
 
-    useEffect(() => {
+    useEffect(() => {           // This useEffect check if there is no currentAccount then return if there is then return currentUserInfo
         if (!currentAccount) return
         requestToGetCurrentUsersInfo(currentAccount)
     }, [currentAccount])
@@ -53,8 +53,8 @@ export const LiftProvider = ({ children }) => {
             })()
     }, [pickupCoordinates, dropoffCoordinates])
 
-    const checkIfWalletIsConnected = async () => {
-        if (!window.ethereum) return
+    const checkIfWalletIsConnected = async () => {  // This function checks if the user has metamask installed and connected
+        if (!window.ethereum) return    
         try {
             const addressArray = await window.ethereum.request({
                 method: 'eth_accounts',
@@ -69,7 +69,7 @@ export const LiftProvider = ({ children }) => {
         }
     }
 
-    const connectWallet = async () => {
+    const connectWallet = async () => {     // This funtion connects wallet
         if (!window.ethereum) return
         try {
             const addressArray = await window.ethereum.request({
@@ -91,8 +91,7 @@ export const LiftProvider = ({ children }) => {
     const createLocationCoordinatePromise = (locationName, locationType) => {
         return new Promise(async (resolve, reject) => {
             try {
-                
-
+            
                 const response = await fetch('api/map/getLocationCoordinates', {    // This is the API route we created in pages/api/map/getLocationCoordinates.js
                     method: 'POST',
                     headers: {
@@ -138,40 +137,40 @@ export const LiftProvider = ({ children }) => {
         } else return
     }, [pickup, dropoff])
 
-    // const requestToCreateUserOnSanity = async address => {
-    //     if (!window.ethereum) return
-    //     try {
-    //         await fetch('/api/db/createUser', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({
-    //                 userWalletAddress: address,
-    //                 name: faker.name.findName(),
-    //             }),
-    //         })
-    //     } catch (error) {
-    //         console.error(error)
-    //     }
-    // }
+    const requestToCreateUserOnSanity = async address => {  // This function creates a new user on Sanity
+        if (!window.ethereum) return    // Not login into metamask then return
+        try {
+            await fetch('/api/db/createUser', {     // fetch this route for creating user in sanity
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userWalletAddress: address,
+                    name: faker.person.fullName(),
+                }),
+            })
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
-    // const requestToGetCurrentUsersInfo = async walletAddress => {
-    //     try {
-    //         const response = await fetch(
-    //             `/api/db/getUserInfo?walletAddress=${walletAddress}`,
-    //         )
+    const requestToGetCurrentUsersInfo = async walletAddress => {   
+        try {
+            const response = await fetch(
+                `/api/db/getUserInfo?walletAddress=${walletAddress}`,
+            )
 
-    //         const data = await response.json()
-    //         setCurrentUser(data.data)
-    //     } catch (error) {
-    //         console.error(error)
-    //     }
-    // }
+            const data = await response.json()
+            setCurrentUser(data.data)
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
     return (
         <LiftContext.Provider
-            value={{
+            value={{        // All these variables can be access to anywhere to the app
                 pickup,
                 setPickup,
                 dropoff,

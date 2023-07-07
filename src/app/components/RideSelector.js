@@ -25,10 +25,8 @@ const RideSelector = () => {
         ; (async () => {
             try {
                 const response = await fetch('/api/db/getRideTypes')  // Getting data from sanity
-                // console.log(response)
                 const data = await response.json()
                 setCarList(data.data)       // Setting up carList state
-                console.log(data.data)
             }
             catch (error) {
                 console.log(error)      // Catching error if any

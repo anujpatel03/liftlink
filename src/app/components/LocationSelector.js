@@ -1,5 +1,6 @@
 "use client"
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
+import { LiftContext } from '../../../context/liftContext'
 
 const style = {
     wrapper: `pt-2`,
@@ -14,8 +15,7 @@ const style = {
 
 const LocationSelector = () => {
     const [inFocus, setInFocus] = useState('from') // Setting focus from to to
-    const [pickup, setPickup] = useState('')
-    const [dropoff, setDropoff] = useState('')
+    const {pickup, setPickup, dropoff, setDropoff} = useContext(LiftContext)// Getting the context object
 
     return (
         <div className={style.wrapper}>
@@ -37,7 +37,7 @@ const LocationSelector = () => {
                         className={style.input}
                         placeholder='Add a pickup location'
                         value={pickup}
-                        onChange={(e) => setPickup(e.target.value)}
+                        onChange={(e) =>setPickup(e.target.value)}
                         onFocus={() => setInFocus('from')}
                     />
                 </div>
@@ -56,7 +56,7 @@ const LocationSelector = () => {
                         className={style.input}
                         placeholder='Enter your destination'
                         value={dropoff}
-                        onChange={(e) => setDropoff(e.target.value)}
+                        onChange={(e) =>setDropoff(e.target.value)}
                         onFocus={() => setInFocus('to')}
                     />
                 </div>

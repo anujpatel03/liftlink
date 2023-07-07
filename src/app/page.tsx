@@ -3,6 +3,8 @@ import Map from './components/Map'
 import LocationSelector from './components/LocationSelector'
 import Confirm from './components/Confirm'
 import 'mapbox-gl/dist/mapbox-gl.css'; // Import the mapbox-gl.css file
+import { LiftProvider } from '../../context/liftContext'
+
 
 const style = {
   wrapper: `h-screen w-screen flex flex-col`,
@@ -16,6 +18,7 @@ const style = {
 export default function Home() {
 
   return (
+    <LiftProvider>
     <div className={style.wrapper}>
       <Navbar />
       <div className={style.main}>
@@ -28,5 +31,6 @@ export default function Home() {
         </div>
       </div>
     </div>
+    </LiftProvider>
   )
 }

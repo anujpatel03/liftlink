@@ -2,7 +2,6 @@
 import RideSelector from "./RideSelector"
 import { useContext } from "react"
 import { LiftContext } from "../../../context/liftContext"
-import { ethers } from 'ethers'
 
 const style = {
     wrapper: `flex-1 h-full flex flex-col justify-between`,
@@ -22,6 +21,7 @@ const Confirm = () => {
         dropoffCoordinates,
         metamask,
     } = useContext(LiftContext);
+    console.log("price : ",price);
 
     const storeTripDetails = async (pickup, dropoff) => {
         try {
@@ -46,7 +46,7 @@ const Confirm = () => {
                         from: currentAccount,
                         to: process.env.NEXT_PUBLIC_LIFTLINK_ADDRESS,
                         gas: '0x7EF40', // 520000 Gwei ( If a transaction exceeds the gas limit, it will fail and any changes made during the transaction will be reverted.)
-                        value: ethers.utils.parseEther(price)._hex,
+                        value: Number(price * 1e18).toString(16)
                     },
                 ],
             })
@@ -55,6 +55,7 @@ const Confirm = () => {
             console.error(error);
         }
     }
+
     return (
         <div className={style.wrapper}>
             <div className={style.rideSelectorContainer}>

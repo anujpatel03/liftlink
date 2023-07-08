@@ -36,7 +36,7 @@ const Navbar = () => {
                 <div className={style.menuItem}>Help</div>
                 <div className={style.menuItem}>{currentUser.name}</div>
                 <div className={style.userImageContainer}>
-                    <Image className={style.userImage} src={avatar} alt="avatar" width={40} height={40} />
+                    <Image className={style.userImage} src={currentUser.imageUrl || avatar} alt="avatar" width={40} height={40} />
                 </div>
                 {
                     currentAccount ? (

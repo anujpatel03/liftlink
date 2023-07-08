@@ -1,11 +1,12 @@
 const getDuration = async (req, res) => {
     const mapboxUrl = `${process.env.NEXT_PUBLIC_MAPBOX_DIRECTION_API_URL}/${req.body.pickupCoordinates};${req.body.dropoffCoordinates}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}`
-    // console.log(mapboxUrl)
+    console.log(mapboxUrl)
     try {
       const response = await fetch(mapboxUrl)
       const data = await response.json()
       console.log(data)
-      res.status(200).send({ message: 'success', data: data.routes[0].duration })
+      // routes[0].duration is in seconds
+      res.status(200).send({ message: 'success', data: data.routes[0].distance })
     } catch (error) {
       res.status(500).send({ message: 'error', data: error.message })
     }

@@ -14,6 +14,7 @@ export const LiftProvider = ({ children }) => {
     const [selectedRide, setSelectedRide] = useState([])
     const [price, setPrice] = useState()
     const [basePrice, setBasePrice] = useState()
+    // const [suggestedLocation, setSuggestedLocation] = useState()  // This will store the suggested location
 
     let metamask
 
@@ -50,7 +51,7 @@ export const LiftProvider = ({ children }) => {
                     // console.log('setbasePrice ', data)
                     // 0.0000065
                     if (isMounted) { // Check if the component is still mounted before updating state
-                        setBasePrice(Math.round(data.data) / 60);
+                        setBasePrice(Math.round(data.data));
                     }
                     return () => {
                         isMounted = false;
@@ -108,17 +109,19 @@ export const LiftProvider = ({ children }) => {
                     }),
                 })
 
-                const data = await response.json()
-
-                if (data.message === 'success') {
+                const responseData = await response.json()
+                // setSuggestedLocation(responseData.data.features[0].place_name);  // This will set the suggested location
+                const data = responseData.data.features[0].center
+                // console.log('data : ', data)
+                // features[0].center
+                if (responseData.message === 'success') {
                     switch (locationType) {
                         case 'pickup':
-                            setPickupCoordinates(data.data)
+                            setPickupCoordinates(data)
                             break
                         case 'dropoff':
-                            setDropoffCoordinates(data.data)
+                            setDropoffCoordinates(data)
                             break
-                        
                     }
                     resolve()
                 } else {

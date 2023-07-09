@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect, useContext } from 'react'
+import { useState, useContext } from 'react'
 import { LiftContext } from '../../../context/liftContext'
 
 const style = {
@@ -10,12 +10,13 @@ const style = {
     focusedInputBox: `border-black`,
     svgContainer: `mx-1`,
     input: `my-2 rounded-2 p-2 outline-none border-none bg-transparent  h-full w-full`,
+    suggestionsBox: ``,
     verticalLine: `w-0 h-[2rem] border-black border absolute z-10 left-[2.3rem] top-[2rem]`,
 }
 
 const LocationSelector = () => {
     const [inFocus, setInFocus] = useState('from') // Setting focus from to to
-    const {pickup, setPickup, dropoff, setDropoff} = useContext(LiftContext)// Getting the context object
+    const { pickup, setPickup, dropoff, setDropoff} = useContext(LiftContext)// Getting the context object
 
     return (
         <div className={style.wrapper}>
@@ -37,7 +38,7 @@ const LocationSelector = () => {
                         className={style.input}
                         placeholder='Add a pickup location'
                         value={pickup}
-                        onChange={(e) =>setPickup(e.target.value)}
+                        onChange={(e) => setPickup(e.target.value)}
                         onFocus={() => setInFocus('from')}
                     />
                 </div>
@@ -56,10 +57,13 @@ const LocationSelector = () => {
                         className={style.input}
                         placeholder='Enter your destination'
                         value={dropoff}
-                        onChange={(e) =>setDropoff(e.target.value)}
+                        onChange={(e) => setDropoff(e.target.value)}
                         onFocus={() => setInFocus('to')}
                     />
                 </div>
+                {/* <div className={style.inputBox}>
+                    {suggestedLocation}
+                </div> */}
             </div>
         </div>
     )

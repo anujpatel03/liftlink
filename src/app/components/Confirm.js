@@ -21,38 +21,42 @@ const Confirm = () => {
         dropoffCoordinates,
         metamask,
     } = useContext(LiftContext);
-    console.log("price : ",price);
+    // console.log("price : ", price);
 
     const storeTripDetails = async (pickup, dropoff) => {
-        try {
-            await fetch('api/db/saveTrips', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    pickupLocation: pickup,
-                    dropoffLocation: dropoff,
-                    userWalletAddress: currentAccount,
-                    price: price,
-                    selectedRide: selectedRide,
-                }),
-            })
-
-            await metamask.request({
-                method: 'eth_sendTransaction',
-                params: [
-                    {
-                        from: currentAccount,
-                        to: process.env.NEXT_PUBLIC_LIFTLINK_ADDRESS,
-                        gas: '0x7EF40', // 520000 Gwei ( If a transaction exceeds the gas limit, it will fail and any changes made during the transaction will be reverted.)
-                        value: Number(price * 1e18).toString(16)
+        if (selectedRide.length !== 0) {
+            try {
+                await fetch('api/db/saveTrips', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
                     },
-                ],
-            })
-        }
-        catch (error) {
-            console.error(error);
+                    body: JSON.stringify({
+                        pickupLocation: pickup,
+                        dropoffLocation: dropoff,
+                        userWalletAddress: currentAccount,
+                        price: price,
+                        selectedRide: selectedRide,
+                    }),
+                })
+
+                await metamask.request({
+                    method: 'eth_sendTransaction',
+                    params: [
+                        {
+                            from: currentAccount,
+                            to: process.env.NEXT_PUBLIC_LIFTLINK_ADDRESS,
+                            gas: '0x7EF40', // 520000 Gwei ( If a transaction exceeds the gas limit, it will fail and any changes made during the transaction will be reverted.)
+                            value: Number(price * 1e18).toString(16)
+                        },
+                    ],
+                })
+            }
+            catch (error) {
+                console.error(error);
+            }
+        } else {
+            alert("Please select a ride")
         }
     }
 
@@ -69,7 +73,7 @@ const Confirm = () => {
                         className={style.confirmButton}
                         onClick={() => { storeTripDetails(pickup, dropoff) }}
                     >
-                        Confirm {selectedRide.service || 'LiftX'}
+                        Confirm {selectedRide.service || 'Ride'}
                     </div>
                 </div>
             </div>

@@ -21,17 +21,17 @@ const style = {
 const RideSelector = () => {
     const [carList, setCarList] = useState([]);  // Setting up carList state
     const { selectedRide, setSelectedRide, setPrice, basePrice } = useContext(LiftContext)
-    console.log("baseprice : ",basePrice)
+    // console.log("baseprice : ",basePrice)
     useEffect(() => {
         ; (async () => {
             try {
                 const response = await fetch('/api/db/getRideTypes')  // Getting data from sanity
                 const data = await response.json()
                 setCarList(data.data)       // Setting up carList state
-                setSelectedRide(data.data[0])
+                // setSelectedRide(data.data[0])
             }
             catch (error) {
-                console.log(error)      // Catching error if any
+                console.error(error)      // Catching error if any
             }
         })()
     }, [])
@@ -49,7 +49,7 @@ const RideSelector = () => {
                             }`}
                             onClick={() => {
                                 setSelectedRide(car)
-                                setPrice(((basePrice / 10 ** 5) * car.priceMultiplier).toFixed(5))
+                                setPrice(((basePrice * 0.0000065) * car.priceMultiplier).toFixed(8))
                             }}
 
                         >
@@ -66,7 +66,7 @@ const RideSelector = () => {
                             </div>
                             <div className={style.priceContainer}>
                                 <div className={style.price}>
-                                    {((basePrice / 10 ** 5) * car.priceMultiplier).toFixed(5)}  {/* Calculating price in etherium */}
+                                    {((basePrice * 0.0000065) * car.priceMultiplier).toFixed(8)}  {/* Calculating price in etherium */}
                                 </div>
                                 <Image src={ethLogo} alt="eth-logo" height={25} width={40} />
                             </div>

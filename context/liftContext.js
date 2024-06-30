@@ -119,10 +119,10 @@ export const LiftProvider = ({ children }) => {
                 })
 
                 const responseData = await response.json()
-                console.log('responseData : ', responseData)
+                // console.log('responseData : ', responseData)
                 // setSuggestedLocation(responseData.data.features[0].place_name);  // This will set the suggested location
                 const data = responseData.data.features[0].center
-                console.log('data : ', data)
+                // console.log('data : ', data)
                 // features[0].center
                 if (responseData.message === 'success') {
                     switch (locationType) {

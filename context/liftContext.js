@@ -14,6 +14,7 @@ export const LiftProvider = ({ children }) => {
     const [selectedRide, setSelectedRide] = useState([])
     const [price, setPrice] = useState()
     const [basePrice, setBasePrice] = useState()
+    const [loading, setLoading] = useState(false)  // Add loading state
     // const [suggestedLocation, setSuggestedLocation] = useState()  // This will store the suggested location
 
     let metamask
@@ -65,6 +66,7 @@ export const LiftProvider = ({ children }) => {
 
     const checkIfWalletIsConnected = async () => {  // This function checks if the user has metamask installed and connected
         if (!window.ethereum) return
+        setLoading(true)
         try {
             const addressArray = await window.ethereum.request({
                 method: 'eth_accounts',
@@ -77,10 +79,17 @@ export const LiftProvider = ({ children }) => {
         } catch (error) {
             console.error(error)
         }
+        finally
+        {
+            setLoading(false)
+        }
     }
 
     const connectWallet = async () => {     // This funtion connects wallet
-        if (!window.ethereum) return
+        if (!window.ethereum) {
+            alert(`Looks like you don't have a MetaMask extension!\nPlease install it to continue!`)
+            return
+        }
         try {
             const addressArray = await window.ethereum.request({
                 method: 'eth_requestAccounts',
@@ -110,9 +119,10 @@ export const LiftProvider = ({ children }) => {
                 })
 
                 const responseData = await response.json()
+                console.log('responseData : ', responseData)
                 // setSuggestedLocation(responseData.data.features[0].place_name);  // This will set the suggested location
                 const data = responseData.data.features[0].center
-                // console.log('data : ', data)
+                console.log('data : ', data)
                 // features[0].center
                 if (responseData.message === 'success') {
                     switch (locationType) {
@@ -196,6 +206,7 @@ export const LiftProvider = ({ children }) => {
                 setPrice,
                 basePrice,
                 metamask,
+                loading,
             }}
         >
             {children}

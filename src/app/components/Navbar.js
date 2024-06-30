@@ -4,6 +4,7 @@ import { LiftContext } from "../../../context/liftContext";
 import Image from "next/image"
 import avatar from "../images/avatar.jpeg"
 import { IoPerson } from "react-icons/io5";
+import { FaSpinner } from "react-icons/fa";
 
 
 const style = {
@@ -16,6 +17,7 @@ const style = {
     userImage: `h-10 w-10 mr-4 rounded-full p-px object-cover cursor-pointer`,
     loginButton: `flex items-center cursor-pointer rounded-full px-4 py-1 h-10 bg-white text-black`,
     loginText: `text-black font-medium ml-2`,
+    spinner: `animate-spin h-5 w-5 mr-3 text-black`,
 }
 
 // const currentAccount = "0x22947Fd32D915De273a17f22463bAc5e99aDDE63"
@@ -23,7 +25,7 @@ const style = {
 //     alert("Install Meta Mask browser extension and connect it with liftlink !");
 // }
 const Navbar = () => {
-    const {currentAccount, connectWallet, currentUser} = useContext(LiftContext);
+    const {currentAccount, connectWallet, currentUser,loading} = useContext(LiftContext);
     return (
         <div className={style.wrapper}>
             <div className={style.leftMenu}>
@@ -44,10 +46,15 @@ const Navbar = () => {
                             {currentAccount.slice(0, 6)}...{currentAccount.slice(39)}
                         </div>
                     ) : (
-
-                        <div className={style.loginButton}  onClick={()=> connectWallet()}>
-                            <IoPerson />
-                            <span className={style.loginText}> Login</span>
+                        <div className={style.loginButton} onClick={() => connectWallet()}>
+                            {loading ? (
+                                <FaSpinner className={style.spinner} />
+                            ) : (
+                                <>
+                                    <IoPerson />
+                                    <span className={style.loginText}> Login</span>
+                                </>
+                            )}
                         </div>
                     )
 

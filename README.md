@@ -36,7 +36,12 @@ npm install
 
 4. Create a `.env.local` file in the root directory of the project and configure the necessary environment variables.You can use the provided `.env.example` file as a template.
 
-
+### Sanity setup
+```
+npm install -g @sanity/cli
+sanity login
+sanity deploy
+```
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 

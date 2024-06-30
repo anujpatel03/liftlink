@@ -10,6 +10,7 @@ const saveTrips = async (req, res) => {
       rideTimestamp: new Date(Date.now()).toISOString(),
       price: parseFloat(req.body.price),
       rideCategory: req.body.selectedRide.service,
+      status: req.body.status,
       passenger: {
         _key: `passenger-${req.body.userWalletAddress} - ${new Date(
           Date.now(),

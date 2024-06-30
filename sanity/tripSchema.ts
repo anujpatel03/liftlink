@@ -34,5 +34,16 @@ export const tripSchema = {
             title: 'Passenger',
             to: [{ type: 'users' }],
         },
+        {
+            name: 'status', // New field for status
+            type: 'string',
+            title: 'Trip status',
+            options: {
+                list: [
+                    { title: 'Completed', value: 'completed' },
+                    { title: 'Failed', value: 'failed' },
+                ],
+            },
+        },
     ],
 }
